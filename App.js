@@ -260,7 +260,7 @@ export default function App() {
         
 
         <View style={styles.dt}>
-          <Text>Select date and time : </Text>
+          <Text style={{fontSize:20, fontWeight:"800"}}>Select date and time : </Text>
           <Date1 />
           <Time />
         </View>

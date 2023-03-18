@@ -17,13 +17,13 @@ const Time = () => {
 
  return (
    <View>
-     <View>
-       <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-         <Text>
-           <Ionicons name="time-outline" size={48} color={"black"} /> {"\n"} Time
-         </Text>
-       </TouchableOpacity>
-     </View>
+      <View>
+        <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+          <Text>
+            <Ionicons name="time-outline" size={48} color={"black"} /> {"\n"} Time
+          </Text>
+        </TouchableOpacity>
+      </View>
 
      {showTimePicker && (
        <DateTimePicker
