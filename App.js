@@ -6,6 +6,9 @@ import { Octicons, MaterialCommunityIcons } from 'react-native-vector-icons';
 import sonu1 from './assets/sonu1.png';
 import EditModal from "./component/EditModal";
 import DialogCompo from './component/DialogCompo';
+import Date1 from './component/Date';
+import Time from './component/Time';
+
 
 const db = SQLite.openDatabase('sonuTodos.db');
 const tbl = 'todoListTable1';
@@ -245,7 +248,7 @@ export default function App() {
           <Octicons name="tasklist" size={35} color="green" style={{ marginLeft: 10 }} />
         </View>
 
-        <View style={{ flex: 1, marginVertical: 35 }}>
+        <View style={{ flex: 1, marginTop: 55, marginBottom:20 }}>
           <TextInput
             placeholderTextColor="black"
             placeholder='Type...🖊️ '
@@ -254,6 +257,15 @@ export default function App() {
             style={{ flex: 1, height: 45, borderWidth: 1, padding: 5, fontSize: 20, paddingLeft: 10, borderRadius: 5 }} >
           </TextInput>
         </View>
+        
+
+        <View style={styles.dt}>
+          <Text>Select date and time : </Text>
+          <Date1 />
+          <Time />
+        </View>
+
+
 
         <TouchableOpacity
           style={{ borderWidth: 1, backgroundColor: "black", borderRadius: 10 }}
@@ -401,6 +413,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  dt: {
+    // borderWidth: 2,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 1,
+    marginBottom: 20,
+    alignItems:"center"
   }
 
 });
