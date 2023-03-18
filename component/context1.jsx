@@ -2,15 +2,16 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 let mycontext = createContext();
 
-const context1 = () => {
-    const [time, setTime] = useState();
-    const [date, setDate] = useState();
+const Context1 = ({ children }) => {
+    const [timeC, setTimeC] = useState();
+    const [dateC, setDateC] = useState();
 
   return (
-    <div>
-      
-    </div>
+      <mycontext.Provider value={{ timeC, setTimeC, dateC, setDateC }}>
+          { children}
+    </mycontext.Provider>
   )
 }
 
-export default context1
+export default Context1;
+export {mycontext};
