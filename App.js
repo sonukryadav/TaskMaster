@@ -3,8 +3,9 @@ import React from 'react';
 import { RefreshControl, Linking, Image, StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, TouchableOpacity, FlatList, Alert, Modal, Vibration } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { Octicons, MaterialCommunityIcons } from 'react-native-vector-icons';
-import Dialog from 'react-native-dialog';
 import sonu1 from './assets/sonu1.png';
+import EditModal from "./component/EditModal";
+import DialogCompo from './component/DialogCompo';
 
 const db = SQLite.openDatabase('sonuTodos.db');
 const tbl = 'todoListTable1';
@@ -23,38 +24,6 @@ const generalExecuteSql = (db, query, params = []) => {
 }
 
 
-const EditModal = ({ modalState, closeModal, children }) => {
-  return (
-    <>
-      <SafeAreaView>
-        <Modal
-          animationType={'slide'}
-          transparent={true}
-          visible={modalState}
-          onRequestClose={closeModal}
-        >
-          <View style={{ flex: 1, borderWidth: 2, borderColor: "black", backgroundColor: "rgba(0,0,0,0.9)", paddingHorizontal: 30, justifyContent: "center" }}>
-            <Text style={{ textAlign: "center", fontSize: 30, fontWeight: "800" }}>Edit your task</Text>
-            {children}
-          </View>
-        </Modal>
-      </SafeAreaView>
-    </>
-  );
-}
-
-
-const DialogCompo = ({ status3, title3, noLabel, noFun, ysLabel, ysFun }) => {
-  return (
-    <>
-      <Dialog.Container visible={status3}>
-        <Dialog.Title><Text style={{ color: "black" }}>{title3}</Text></Dialog.Title>
-        <Dialog.Button label={noLabel} onPress={noFun} />
-        <Dialog.Button label={ysLabel} onPress={ysFun} />
-      </Dialog.Container>
-    </>
-  );
-}
 
 
 export default function App() {
@@ -256,7 +225,7 @@ export default function App() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            title="sonu"
+            title="Refreshing..."
             // size={"30"}
             colors={["green", "red", "black"]}
             progressBackgroundColor={"white"}
