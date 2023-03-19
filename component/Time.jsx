@@ -10,7 +10,7 @@ const Time = () => {
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
 
   useEffect(() => {
-    setTimeC(time)
+    setTimeC(time);
   }, [time]);
 
   const handleTimeSelection = (event, selectedTime) => {
@@ -19,8 +19,6 @@ const Time = () => {
     setTime(currentTime);
     setTimeC(currentTime);
   };
-
-  // console.log(time);
 
  return (
    <View>
@@ -38,7 +36,7 @@ const Time = () => {
          mode="time"
          display="default"
          onChange={handleTimeSelection}
-         is24Hour={false}
+         is24Hour={true}
        />
      )}
    </View>
