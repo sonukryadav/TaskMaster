@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
-import { RefreshControl, Linking, Image, StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, TouchableOpacity, FlatList, Alert, Modal, Vibration } from 'react-native';
-import * as SQLite from 'expo-sqlite';
-import { Octicons, MaterialCommunityIcons } from 'react-native-vector-icons';
-import sonu1 from './assets/sonu1.png';
+import { StatusBar } from "expo-status-bar";
+import React, { useContext } from "react";
+import {
+  RefreshControl,
+  Linking,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+  Modal,
+  Vibration,
+} from "react-native";
+import * as SQLite from "expo-sqlite";
+import { Octicons, MaterialCommunityIcons } from "react-native-vector-icons";
+import sonu1 from "./assets/sonu1.png";
 import EditModal from "./component/EditModal";
-import DialogCompo from './component/DialogCompo';
-import Date1 from './component/Date';
-import Time from './component/Time'
-import { mycontext } from './component/Context1';
-import Countdown1 from "./component/Countdown1"
+import DialogCompo from "./component/DialogCompo";
+import Date1 from "./component/Date";
+import Time from "./component/Time";
+import { mycontext } from "./component/Context1";
+import Countdown2 from "./component/Countdown2";
 
-
-const db = SQLite.openDatabase('sonuTodos.db');
-const tbl = 'todoListTable1';
-
+const db = SQLite.openDatabase("sonuTodos.db");
+const tbl = "todoListTable1";
 
 const generalExecuteSql = (db, query, params = []) => {
   return new Promise((resolve, reject) => {
@@ -23,13 +36,11 @@ const generalExecuteSql = (db, query, params = []) => {
         query,
         params,
         (tx, result) => resolve(result),
-        (e) => reject(e));
+        (e) => reject(e)
+      );
     });
   });
-}
-
-
-
+};
 
 export default function App() {
   const [todo, setTodo] = React.useState("");
@@ -231,285 +242,284 @@ export default function App() {
   }, []);
 
   return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor={"black"} />
-        <ScrollView
-          nestedScrollEnabled={true}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              title="Refreshing..."
-              // size={"30"}
-              colors={["green", "red", "black"]}
-              progressBackgroundColor={"white"}
-              progressViewOffset={50}
-            />
-          }
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={"black"} />
+      <ScrollView
+        nestedScrollEnabled={true}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            title="Refreshing..."
+            // size={"30"}
+            colors={["green", "red", "black"]}
+            progressBackgroundColor={"white"}
+            progressViewOffset={50}
+          />
+        }
+        style={{
+          padding: 30,
+          flex: 1,
+        }}
+      >
+        <View
           style={{
-            padding: 30,
             flex: 1,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <View
+          <Octicons
+            name="tasklist"
+            size={35}
+            color="green"
+            style={{ marginRight: 10 }}
+          />
+          <Text style={styles.topHeading}>TASK MASTER</Text>
+          <Octicons
+            name="tasklist"
+            size={35}
+            color="green"
+            style={{ marginLeft: 10 }}
+          />
+        </View>
+
+        <View style={{ flex: 1, marginTop: 55, marginBottom: 20 }}>
+          <TextInput
+            placeholderTextColor="black"
+            placeholder="Type...🖊️ "
+            value={todo}
+            onChangeText={(val) => setTodo(val)}
             style={{
               flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
+              height: 45,
+              borderWidth: 1,
+              padding: 5,
+              fontSize: 20,
+              paddingLeft: 10,
+              borderRadius: 5,
+            }}
+          ></TextInput>
+        </View>
+
+        <View style={styles.dt}>
+          <Text style={{ fontSize: 20, fontWeight: "800" }}>
+            Select date and time :{" "}
+          </Text>
+          <Date1 />
+          <Time />
+        </View>
+
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            backgroundColor: "black",
+            borderRadius: 10,
+          }}
+          onPress={add}
+        >
+          <View style={styles.addAndDeleteAllButtonView}>
+            <Octicons name="diff-added" size={25} color="white" />
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                fontWeight: "700",
+                color: "white",
+                marginLeft: 7,
+              }}
+            >
+              ADD
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        {ss.length == 0 ? (
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert("Hey,", "🗑️ No task in the task box.");
             }}
           >
-            <Octicons
-              name="tasklist"
-              size={35}
-              color="green"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={styles.topHeading}>TASK MASTER</Text>
-            <Octicons
-              name="tasklist"
-              size={35}
-              color="green"
-              style={{ marginLeft: 10 }}
-            />
-          </View>
+            <Text style={{ ...styles.todoText, marginVertical: 30 }}>
+              No task added
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <FlatList
+            data={ss}
+            renderItem={({ item, index }) => (
+              <View style={styles.flatListView1}>
 
-          <View style={{ flex: 1, marginTop: 55, marginBottom: 20 }}>
+                <TouchableOpacity style={{ flex: 0.3 }}>
+                  <Countdown2 />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{ flex: 0.6 }}
+                  onLongPress={() => {
+                    edit({ item });
+                  }}
+                  onPress={() => {
+                    comp({ item });
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.todoText,
+                      !item.completed
+                        ? {}
+                        : {
+                            textDecorationLine: "line-through",
+                            backgroundColor: "rgba(11,11,11,0.5)",
+                            borderColor: "red",
+                          },
+                    ]}
+                  >
+                    {item.task}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => singleDelete({ item })} style={{ flex:0.1 }}>
+                  <MaterialCommunityIcons name="delete" size={40} color="red" />
+                </TouchableOpacity>
+              </View>
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            nestedScrollEnabled={true}
+            style={styles.flatList1}
+          />
+        )}
+
+        <EditModal {...state}>
+          <View
+            style={{ borderWidth: 1, padding: 30, backgroundColor: "white" }}
+          >
             <TextInput
               placeholderTextColor="black"
-              placeholder="Type...🖊️ "
+              placeholder="Type..."
               value={todo}
               onChangeText={(val) => setTodo(val)}
               style={{
-                flex: 1,
-                height: 45,
+                height: 70,
                 borderWidth: 1,
-                padding: 5,
+                padding: 4,
                 fontSize: 20,
                 paddingLeft: 10,
-                borderRadius: 5,
+                marginBottom: 30,
+                borderRadius: 10,
               }}
             ></TextInput>
-          </View>
-
-          <View style={styles.dt}>
-            <Text style={{ fontSize: 20, fontWeight: "800" }}>
-              Select date and time :{" "}
-            </Text>
-            <Date1 />
-            <Time />
-          </View>
-
-          <TouchableOpacity
-            style={{
-              borderWidth: 1,
-              backgroundColor: "black",
-              borderRadius: 10,
-            }}
-            onPress={add}
-          >
-            <View style={styles.addAndDeleteAllButtonView}>
-              <Octicons name="diff-added" size={25} color="white" />
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                backgroundColor: "black",
+                borderRadius: 10,
+                padding: 8,
+              }}
+              onPress={save}
+            >
               <Text
                 style={{
                   textAlign: "center",
                   fontSize: 20,
                   fontWeight: "700",
                   color: "white",
-                  marginLeft: 7,
                 }}
               >
-                ADD
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-        <Countdown1 />
-
-          {ss.length == 0 ? (
-            <TouchableOpacity
-              onPress={() => {
-                Alert.alert("Hey,", "🗑️ No task in the task box.");
-              }}
-            >
-              <Text style={{ ...styles.todoText, marginVertical: 30 }}>
-                No task added
+                SAVE
               </Text>
             </TouchableOpacity>
-          ) : (
-            <FlatList
-              data={ss}
-              renderItem={({ item, index }) => (
-                <View style={styles.flatListView1}>
-                  <TouchableOpacity
-                    style={{ flex: 1 }}
-                    onLongPress={() => {
-                      edit({ item });
-                    }}
-                    onPress={() => {
-                      comp({ item });
-                    }}
-                  >
-                    <Text
-                      style={[
-                        styles.todoText,
-                        !item.completed
-                          ? {}
-                          : {
-                              textDecorationLine: "line-through",
-                              backgroundColor: "rgba(11,11,11,0.5)",
-                              borderColor: "red",
-                            },
-                      ]}
-                    >
-                      {item.task}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => singleDelete({ item })}>
-                    <MaterialCommunityIcons
-                      name="delete"
-                      size={40}
-                      color="red"
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-              keyExtractor={(item) => item.id.toString()}
-              nestedScrollEnabled={true}
-              style={styles.flatList1}
-            />
-          )}
-
-          <EditModal {...state}>
-            <View
-              style={{ borderWidth: 1, padding: 30, backgroundColor: "white" }}
-            >
-              <TextInput
-                placeholderTextColor="black"
-                placeholder="Type..."
-                value={todo}
-                onChangeText={(val) => setTodo(val)}
-                style={{
-                  height: 70,
-                  borderWidth: 1,
-                  padding: 4,
-                  fontSize: 20,
-                  paddingLeft: 10,
-                  marginBottom: 30,
-                  borderRadius: 10,
-                }}
-              ></TextInput>
-              <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  backgroundColor: "black",
-                  borderRadius: 10,
-                  padding: 8,
-                }}
-                onPress={save}
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 20,
-                    fontWeight: "700",
-                    color: "white",
-                  }}
-                >
-                  SAVE
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </EditModal>
-
-          <DialogCompo
-            status3={dialogVisible.show}
-            title3={"Do you want to delete?"}
-            noLabel={"No"}
-            noFun={cancel}
-            ysLabel={"Yes"}
-            ysFun={okay}
-          />
-
-          <TouchableOpacity
-            style={{
-              borderWidth: 1,
-              backgroundColor: "black",
-              borderRadius: 10,
-            }}
-            onPress={() => {
-              dropTable();
-            }}
-            disabled={ss.length == 0}
-          >
-            <View style={styles.addAndDeleteAllButtonView}>
-              <MaterialCommunityIcons
-                name="delete-circle"
-                size={32}
-                color="white"
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  textAlign: "center",
-                  fontWeight: "700",
-                  color: "white",
-                  marginLeft: 7,
-                }}
-              >
-                Delete all tasks
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <DialogCompo
-            status3={deleteTable.show}
-            title3={"Do you want to delete all the task?"}
-            noLabel={"No"}
-            noFun={deleteCancel}
-            ysLabel={"Yes"}
-            ysFun={deleteOkay}
-          />
-
-          <View style={{ marginVertical: 35 }}>
-            <Text>
-              * To toggle for task status - onPress.{`\n`}* To edit any task -
-              onLongPress
-            </Text>
           </View>
-        </ScrollView>
+        </EditModal>
 
-        <View style={{ flex: 0, padding: 5 }}>
-          <TouchableOpacity onPress={sonuTouch}>
-            <Image
-              source={sonu1}
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50,
-                alignSelf: "center",
-              }}
+        <DialogCompo
+          status3={dialogVisible.show}
+          title3={"Do you want to delete?"}
+          noLabel={"No"}
+          noFun={cancel}
+          ysLabel={"Yes"}
+          ysFun={okay}
+        />
+
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            backgroundColor: "black",
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            dropTable();
+          }}
+          disabled={ss.length == 0}
+        >
+          <View style={styles.addAndDeleteAllButtonView}>
+            <MaterialCommunityIcons
+              name="delete-circle"
+              size={32}
+              color="white"
             />
             <Text
-              style={{ fontWeight: "600", textAlign: "center", fontSize: 10 }}
+              style={{
+                fontSize: 20,
+                textAlign: "center",
+                fontWeight: "700",
+                color: "white",
+                marginLeft: 7,
+              }}
             >
-              Sonu kr.
+              Delete all tasks
             </Text>
-            <Text style={{ textAlign: "center", fontSize: 8 }}>
-              Mobile App Developer
-            </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
 
-        <StatusBar style="auto" />
-      </SafeAreaView>
+        <DialogCompo
+          status3={deleteTable.show}
+          title3={"Do you want to delete all the task?"}
+          noLabel={"No"}
+          noFun={deleteCancel}
+          ysLabel={"Yes"}
+          ysFun={deleteOkay}
+        />
+
+        <View style={{ marginVertical: 35 }}>
+          <Text>
+            * To toggle for task status - onPress.{`\n`}* To edit any task -
+            onLongPress
+          </Text>
+        </View>
+      </ScrollView>
+
+      <View style={{ flex: 0, padding: 5 }}>
+        <TouchableOpacity onPress={sonuTouch}>
+          <Image
+            source={sonu1}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 50,
+              alignSelf: "center",
+            }}
+          />
+          <Text
+            style={{ fontWeight: "600", textAlign: "center", fontSize: 10 }}
+          >
+            Sonu kr.
+          </Text>
+          <Text style={{ textAlign: "center", fontSize: 8 }}>
+            Mobile App Developer
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <StatusBar style="auto" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightblue',
+    backgroundColor: "lightblue",
     paddingTop: 35,
   },
   topHeading: {
@@ -518,16 +528,17 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     textShadowOffset: { width: 2, height: 5 },
     textShadowRadius: 5,
-    textShadowColor: 'grey'
+    textShadowColor: "grey",
   },
   todoText: {
     borderWidth: 0.5,
-    padding: 5,
-    marginVertical: 5,
+    padding: 12,
+    marginVertical: 20,
     textAlign: "center",
     fontWeight: "800",
-    fontSize: 17,
+    fontSize: 18,
     borderRadius: 10,
+    marginHorizontal:2,
     backgroundColor: "rgba(101,255,255,0.3)",
   },
   flatList1: {
@@ -545,7 +556,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems:"center"
   },
   dt: {
     // borderWidth: 2,
@@ -553,7 +564,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginTop: 1,
     marginBottom: 20,
-    alignItems:"center"
-  }
-
+    alignItems: "center",
+  },
 });
