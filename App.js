@@ -21,7 +21,7 @@ import { Octicons, MaterialCommunityIcons } from "react-native-vector-icons";
 import sonu1 from "./assets/sonu1.png";
 import EditModal from "./component/EditModal";
 import DialogCompo from "./component/DialogCompo";
-import Date1 from "./component/Date";
+import Date1 from "./component/Date1";
 import Time from "./component/Time";
 import { mycontext } from "./component/Context1";
 import Countdown2 from "./component/Countdown2";
@@ -59,6 +59,13 @@ export default function App() {
   const [refreshing, setRefreshing] = React.useState(false);
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
 
+  let aa = new Date();
+  let aaa = aa.getTime();
+  console.log(aaa);
+  console.log(new Date(1651500541554));
+
+
+
   React.useEffect(() => {
     generalExecuteSql(
       db,
@@ -83,10 +90,7 @@ export default function App() {
       Alert.alert("Hey", "📝 Please enter your task.");
       return;
     }
-    let updatedArray = [
-      ...ss,
-      { id: ss.length + 1, task: todo.trim(), completed: false },
-    ];
+    let updatedArray = [...ss,{ id: ss.length + 1, task: todo.trim(), completed: false },];
     setTodo("");
     setSs(updatedArray);
     addTaskSql();
@@ -305,7 +309,7 @@ export default function App() {
 
         <View style={styles.dt}>
           <Text style={{ fontSize: 20, fontWeight: "800" }}>
-            Select date and time :{" "}
+            Select date and time :
           </Text>
           <Date1 />
           <Time />
@@ -352,7 +356,7 @@ export default function App() {
               <View style={styles.flatListView1}>
 
                 <TouchableOpacity style={{ flex: 0.3 }}>
-                  <Countdown2 />
+                  <Countdown2 item={item} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
