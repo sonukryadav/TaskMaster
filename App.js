@@ -9,6 +9,7 @@ import DialogCompo from './component/DialogCompo';
 import Date1 from './component/Date';
 import Time from './component/Time'
 import { mycontext } from './component/Context1';
+import Countdown1 from "./component/Countdown1"
 
 
 const db = SQLite.openDatabase('sonuTodos.db');
@@ -322,6 +323,8 @@ export default function App() {
               </Text>
             </View>
           </TouchableOpacity>
+
+        <Countdown1 />
 
           {ss.length == 0 ? (
             <TouchableOpacity

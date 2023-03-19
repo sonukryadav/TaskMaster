@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons } from "react-native-vector-icons"
@@ -7,7 +7,11 @@ import { mycontext } from "./Context1";
 const Time = () => {
   const [time, setTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
-    const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
+  const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
+
+  useEffect(() => {
+    setTimeC(time)
+  }, [time]);
 
   const handleTimeSelection = (event, selectedTime) => {
     const currentTime = selectedTime || time;
