@@ -4,7 +4,7 @@ import CountDown from 'react-native-countdown-component';
 import DialogCompo from './DialogCompo';
 import { FontAwesome } from "react-native-vector-icons";
 
-const Countdown2 = ({ item }) => {
+const Countdown2 = ({ item, date, time }) => {
     const [show, setShow] = useState(false);
 
     const cancel = () => {
@@ -15,10 +15,12 @@ const Countdown2 = ({ item }) => {
         setShow(show => !show);
     }
 
+    // console.log("COUNT22222" + time);
+
     return (
         <View>
             <CountDown
-                until={5}
+                until={Math.round(time/1000)}
                 onFinish={() =>setShow(true)}
                 onPress={() => alert("hello")}
                 size={15}

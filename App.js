@@ -26,8 +26,8 @@ import Time from "./component/Time";
 import { mycontext } from "./component/Context1";
 import Countdown2 from "./component/Countdown2";
 
-const db = SQLite.openDatabase("sonuTodos.db");
-const tbl = "todoListTable1";
+const db = SQLite.openDatabase("taskMaster.db");
+const tbl = "taskMaster";
 
 const generalExecuteSql = (db, query, params = []) => {
   return new Promise((resolve, reject) => {
@@ -58,18 +58,20 @@ export default function App() {
   });
   const [refreshing, setRefreshing] = React.useState(false);
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
+  // console.log(timeC);
+  // console.log(dateC);
 
-  let aa = new Date();
-  let aaa = aa.getTime();
-  console.log(aaa);
-  console.log(new Date(1651500541554));
+  // let aa = new Date();
+  // let aaa = aa.getTime();
+  // console.log(aaa);
+  // console.log(new Date(1651500541554));
 
 
 
   React.useEffect(() => {
     generalExecuteSql(
       db,
-      `CREATE TABLE IF NOT EXISTS ${tbl} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR(100), completed BOOLEAN)`
+      `CREATE TABLE IF NOT EXISTS ${tbl} (id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR(100), completed BOOLEAN, date BIGINT(255), time BIGINT(255))`
     )
       .then((result) => console.log("Success :-->", result))
       .catch((e) => console.log("Failure :-->", e));
@@ -90,20 +92,22 @@ export default function App() {
       Alert.alert("Hey", "📝 Please enter your task.");
       return;
     }
-    let updatedArray = [...ss,{ id: ss.length + 1, task: todo.trim(), completed: false },];
+    let de = dateC.getTime();
+    let te = timeC.getTime();
+    let updatedArray = [...ss,{ id: ss.length + 1, task: todo.trim(), completed: false, date:de, time:te },];
     setTodo("");
     setSs(updatedArray);
+    console.log(updatedArray);
     addTaskSql();
   }, [todo]);
 
   const addTaskSql = () => {
     let todoT = todo.trim();
+    let de = dateC.getTime();
+    let te = timeC.getTime();
     generalExecuteSql(
-      db,
-      `INSERT INTO ${tbl} (task, completed) VALUES (?, ?)`,
-      [todoT, 0]
-    )
-      .then((tx) => {
+      db,`INSERT INTO ${tbl} (task, completed, date, time) VALUES (?, ?, ? ,?)`,[todoT, 0, de, te ]
+    ).then((tx) => {
         console.log("Successfully inserted data to table :---->", tx);
 
         generalExecuteSql(db, `SELECT * FROM ${tbl}`)
@@ -215,7 +219,6 @@ export default function App() {
     setSs((p) => ar);
     setToDelete((p) => {});
     setDialogVisible({ delete1: false, show: false });
-    console.log("f");
   };
 
   const updateDb = async (del) => {
@@ -356,7 +359,7 @@ export default function App() {
               <View style={styles.flatListView1}>
 
                 <TouchableOpacity style={{ flex: 0.3 }}>
-                  <Countdown2 item={item} />
+                  <Countdown2 item={item} date={item.date} time={item.time} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -388,7 +391,7 @@ export default function App() {
                 </TouchableOpacity>
               </View>
             )}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item, index) => index.toString()}
             nestedScrollEnabled={true}
             style={styles.flatList1}
           />
