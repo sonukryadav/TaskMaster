@@ -16,7 +16,7 @@ const Time = () => {
     setTimeC(currentTime);
   };
 
-  console.log(time);
+  // console.log(time);
 
  return (
    <View>

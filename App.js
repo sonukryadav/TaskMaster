@@ -8,7 +8,6 @@ import EditModal from "./component/EditModal";
 import DialogCompo from './component/DialogCompo';
 import Date1 from './component/Date';
 import Time from './component/Time'
-import Context1 from './component/Context1';
 import { mycontext } from './component/Context1';
 
 
@@ -46,7 +45,7 @@ export default function App() {
     delete1: false,
   });
   const [refreshing, setRefreshing] = React.useState(false);
-  // const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
+  const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
 
   React.useEffect(() => {
     generalExecuteSql(
@@ -231,7 +230,6 @@ export default function App() {
   }, []);
 
   return (
-    <Context1>
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={"black"} />
         <ScrollView
@@ -502,7 +500,6 @@ export default function App() {
 
         <StatusBar style="auto" />
       </SafeAreaView>
-    </Context1>
   );
 }
 
