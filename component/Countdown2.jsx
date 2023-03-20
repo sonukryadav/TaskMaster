@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import CountDown from 'react-native-countdown-component';
 import DialogCompo from './DialogCompo';
 import { FontAwesome } from "react-native-vector-icons";
+import Moment from "react-moment";
 
 const Countdown2 = ({ item, date, time }) => {
     const [show, setShow] = useState(false);
@@ -14,13 +15,20 @@ const Countdown2 = ({ item, date, time }) => {
     const okay = () => {
         setShow(show => !show);
     }
+    
+    let today = new Date();
+    let todayms = today.getTime();
+    let TimeDone = Math.abs(time - todayms);
+    console.log(TimeDone/1000);
 
-    // console.log("COUNT22222" + time);
+    console.log(new Date(date), new Date(time))
+
+    console.log(new Date().toLocaleString());
 
     return (
         <View>
             <CountDown
-                until={Math.round(time/1000)}
+                until={Math.round(TimeDone/1000)}
                 onFinish={() =>setShow(true)}
                 onPress={() => alert("hello")}
                 size={15}

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   RefreshControl,
   Linking,
@@ -15,6 +15,7 @@ import {
   Alert,
   Modal,
   Vibration,
+  AppState,
 } from "react-native";
 import * as SQLite from "expo-sqlite";
 import { Octicons, MaterialCommunityIcons } from "react-native-vector-icons";
@@ -67,7 +68,6 @@ export default function App() {
   // console.log(new Date(1651500541554));
 
 
-
   React.useEffect(() => {
     generalExecuteSql(
       db,
@@ -97,7 +97,6 @@ export default function App() {
     let updatedArray = [...ss,{ id: ss.length + 1, task: todo.trim(), completed: false, date:de, time:te },];
     setTodo("");
     setSs(updatedArray);
-    console.log(updatedArray);
     addTaskSql();
   }, [todo]);
 
