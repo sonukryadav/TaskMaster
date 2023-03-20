@@ -11,7 +11,9 @@ const Time = () => {
 
   useEffect(() => {
     setTimeC(time);
-  }, [time]);
+  }, []);
+
+
 
   const handleTimeSelection = (event, selectedTime) => {
     const currentTime = selectedTime || time;

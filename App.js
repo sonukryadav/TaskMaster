@@ -357,12 +357,12 @@ export default function App() {
             renderItem={({ item, index }) => (
               <View style={styles.flatListView1}>
 
-                <TouchableOpacity style={{ flex: 0.3 }}>
+                <TouchableOpacity style={{ flex: 0.2 }}>
                   <Countdown2 item={item} date={item.date} time={item.time} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={{ flex: 0.6 }}
+                  style={{ flex: 0.5 }}
                   onLongPress={() => {
                     edit({ item });
                   }}
@@ -385,7 +385,7 @@ export default function App() {
                     {item.task}
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => singleDelete({ item })} style={{ flex:0.1 }}>
+                <TouchableOpacity onPress={() => singleDelete({ item })} style={{ flex:0 }}>
                   <MaterialCommunityIcons name="delete" size={40} color="red" />
                 </TouchableOpacity>
               </View>
@@ -542,10 +542,11 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     textAlign: "center",
     fontWeight: "800",
-    fontSize: 18,
+    fontSize: 15,
     borderRadius: 10,
     marginHorizontal:2,
     backgroundColor: "rgba(101,255,255,0.3)",
+    marginLeft:30
   },
   flatList1: {
     marginVertical: 30,

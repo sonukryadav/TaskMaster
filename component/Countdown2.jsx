@@ -15,23 +15,17 @@ const Countdown2 = ({ item, date, time }) => {
     const okay = () => {
         setShow(show => !show);
     }
-    
-    let today = new Date();
-    let todayms = today.getTime();
-    let TimeDone = Math.abs(time - todayms);
-    console.log(TimeDone/1000);
 
-    console.log(new Date(date), new Date(time))
 
-    console.log(new Date().toLocaleString());
+    // console.log(new Date(time)+ " ppp")
 
     return (
         <View>
             <CountDown
-                until={Math.round(TimeDone/1000)}
+                until={Math.round(1000000)}
                 onFinish={() =>setShow(true)}
                 onPress={() => alert("hello")}
-                size={15}
+                size={12}
             />
             <DialogCompo
                 status3={show}
