@@ -25,7 +25,7 @@ import DialogCompo from "./component/DialogCompo";
 import Date1 from "./component/Date1";
 import Time from "./component/Time";
 import { mycontext } from "./component/Context1";
-import Countdown2 from "./component/Countdown2";
+import date from 'date-and-time';
 
 const db = SQLite.openDatabase("taskMaster.db");
 const tbl = "taskMaster";
@@ -98,7 +98,7 @@ export default function App() {
     setTodo("");
     setSs(updatedArray);
     addTaskSql();
-  }, [todo]);
+  }, [todo, dateC]);
 
   const addTaskSql = () => {
     let todoT = todo.trim();
@@ -354,42 +354,41 @@ export default function App() {
         ) : (
           <FlatList
             data={ss}
-            renderItem={({ item, index }) => (
-              <View style={styles.flatListView1}>
-
-                <TouchableOpacity style={{ flex: 0.2 }}>
-                  <Countdown2 item={item} date={item.date} time={item.time} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{ flex: 0.5 }}
-                  onLongPress={() => {
-                    edit({ item });
-                  }}
-                  onPress={() => {
-                    comp({ item });
-                  }}
-                >
-                  <Text
-                    style={[
-                      styles.todoText,
-                      !item.completed
-                        ? {}
-                        : {
+              renderItem={({ item, index }) => {
+                let dd = new Date(item.date);
+                let dd1 = date.format(dd, 'ddd, MMM DD YYYY');
+                return (
+                <View style={styles.flatListView1}>
+                    <Text style={styles.dateR}>{dd1}</Text>
+                  <TouchableOpacity
+                    style={{ flex: 1 }}
+                    onLongPress={() => {
+                      edit({ item });
+                    }}
+                    onPress={() => {
+                      comp({ item });
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.todoText,
+                        !item.completed
+                          ? {}
+                          : {
                             textDecorationLine: "line-through",
                             backgroundColor: "rgba(11,11,11,0.5)",
                             borderColor: "red",
                           },
-                    ]}
-                  >
-                    {item.task}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => singleDelete({ item })} style={{ flex:0 }}>
-                  <MaterialCommunityIcons name="delete" size={40} color="red" />
-                </TouchableOpacity>
-              </View>
-            )}
+                      ]}
+                    >
+                      {item.task}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => singleDelete({ item })} style={{ flex: 0 }}>
+                    <MaterialCommunityIcons name="delete" size={40} color="red" />
+                  </TouchableOpacity>
+                </View>)
+              }}
             keyExtractor={(item, index) => index.toString()}
             nestedScrollEnabled={true}
             style={styles.flatList1}
@@ -573,4 +572,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
   },
+
+  dateR: {
+    fontSize: 12,
+  }
 });

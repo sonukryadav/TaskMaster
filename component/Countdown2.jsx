@@ -18,6 +18,7 @@ const Countdown2 = ({ item, date, time }) => {
 
 
     // console.log(new Date(time)+ " ppp")
+    console.log(item);
 
     return (
         <View>

@@ -15,10 +15,10 @@ const Date1 = () => {
 
 
     const handleDateSelection = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShowDatePicker(false);
-      setDate(currentDate);
+      const currentDate = selectedDate || date;
       setDateC(currentDate);
+      setDate(currentDate);
+      setShowDatePicker(false);
     };
 
 
