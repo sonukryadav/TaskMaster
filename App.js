@@ -227,7 +227,7 @@ export default function App() {
   };
 
   const sonuTouch = React.useCallback(async () => {
-    let url = `https://sonukr.in/`;
+    let url = `https://sonukryadav.github.io/`;
     let supported = await Linking.canOpenURL(url);
     if (supported) {
       await Linking.openURL(url);
