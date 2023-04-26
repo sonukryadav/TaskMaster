@@ -6,10 +6,6 @@ const Context1 = ({ children }) => {
   const [timeC, setTimeC] = useState("time");
   const [dateC, setDateC] = useState("date");
 
-  useEffect(() => {
-    setDateC("");
-  }),[dateC];
-
   return (
     <mycontext.Provider value={{ timeC, setTimeC, dateC, setDateC }}>
       {children}

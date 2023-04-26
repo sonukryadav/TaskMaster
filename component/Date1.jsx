@@ -4,7 +4,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Fontisto  } from "react-native-vector-icons";
 import {mycontext } from "./Context1"
 
-const Date1 = () => {
+const Date1 = ({ dateFun }) => {
     const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
@@ -16,9 +16,10 @@ const Date1 = () => {
 
     const handleDateSelection = (event, selectedDate) => {
       const currentDate = selectedDate || date;
+      setShowDatePicker(false);
       setDateC(currentDate);
       setDate(currentDate);
-      setShowDatePicker(false);
+      dateFun(currentDate);
     };
 
 

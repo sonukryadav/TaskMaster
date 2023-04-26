@@ -58,6 +58,7 @@ export default function App() {
     delete1: false,
   });
   const [refreshing, setRefreshing] = React.useState(false);
+  const [dateAs, setDateAs] = React.useState(new Date());
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
   // console.log(timeC);
   // console.log(dateC);
@@ -83,8 +84,27 @@ export default function App() {
         console.log("Table data :----> ", data?.rows?._array);
         setSs(data?.rows?._array);
       })
-      .catch((err) => console.log("Failed in retrieving table data", data));
+      .catch((err) => {
+        // console.log("Failed in retrieving table data", data);
+      }
+      );
   }, []);
+
+
+  // ----------------------------
+
+  const dateCall = (dateSee) => {
+    setDateAs(pre => dateSee);
+  }
+
+  const timeSee = (timeSee) => {
+    return timeSee;
+  }
+
+  console.log("dateAs-----", dateAs);
+
+
+  // ----------------------------
 
   const add = React.useCallback(() => {
     Vibration.vibrate(100);
@@ -92,13 +112,14 @@ export default function App() {
       Alert.alert("Hey", "📝 Please enter your task.");
       return;
     }
-    let de = dateC.getTime();
+    // let de = dateC.getTime();
+    let de = dateAs.getTime();
     let te = timeC.getTime();
     let updatedArray = [...ss,{ id: ss.length + 1, task: todo.trim(), completed: false, date:de, time:te },];
     setTodo("");
     setSs(updatedArray);
     addTaskSql();
-  }, [todo, dateC]);
+  }, [todo, dateAs]);
 
   const addTaskSql = () => {
     let todoT = todo.trim();
@@ -107,11 +128,11 @@ export default function App() {
     generalExecuteSql(
       db,`INSERT INTO ${tbl} (task, completed, date, time) VALUES (?, ?, ? ,?)`,[todoT, 0, de, te ]
     ).then((tx) => {
-        console.log("Successfully inserted data to table :---->", tx);
+        // console.log("Successfully inserted data to table :---->", tx);
 
         generalExecuteSql(db, `SELECT * FROM ${tbl}`)
           .then((data) => {
-            console.log("Table data :----> ", data?.rows?._array);
+            // console.log("Table data :----> ", data?.rows?._array);
           })
           .catch((err) => console.log("Failed in retrieving table data", data));
       })
@@ -313,7 +334,7 @@ export default function App() {
           <Text style={{ fontSize: 20, fontWeight: "800" }}>
             Select date and time :
           </Text>
-          <Date1 />
+          <Date1 dateFun={dateCall} />
           <Time />
         </View>
 
@@ -357,9 +378,10 @@ export default function App() {
               renderItem={({ item, index }) => {
                 let dd = new Date(item.date);
                 let dd1 = date.format(dd, 'ddd, MMM DD YYYY');
+                let tt1 = date.format(dd, 'hh:mm A [GMT]Z');
                 return (
                 <View style={styles.flatListView1}>
-                    <Text style={styles.dateR}>{dd1}</Text>
+                    <Text style={styles.dateR}>{tt1.substring(0,8) + "\n" + dd1}</Text>
                   <TouchableOpacity
                     style={{ flex: 1 }}
                     onLongPress={() => {
