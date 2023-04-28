@@ -3,15 +3,16 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons } from "react-native-vector-icons"
 import { mycontext } from "./Context1";
+import date from 'date-and-time';
 
-const Time = () => {
+const Time = ({ timeFun}) => {
   const [time, setTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
 
   useEffect(() => {
     setTimeC(time);
-  }, []);
+  }, [time]);
 
 
 
@@ -20,29 +21,31 @@ const Time = () => {
     setShowTimePicker(false);
     setTime(currentTime);
     setTimeC(currentTime);
+    let dt = date.format(selectedTime, 'hh:mm A [GMT]Z');
+    timeFun(dt);
   };
 
- return (
-   <View>
+    return (
       <View>
-        <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-          <Text>
-            <Ionicons name="time-outline" size={48} color={"black"} /> {"\n"} Time
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <View>
+            <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+              <Text>
+                <Ionicons name="time-outline" size={48} color={"black"} /> {"\n"} Time
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-     {showTimePicker && (
-       <DateTimePicker
-         value={time}
-         mode="time"
-         display="default"
-         onChange={handleTimeSelection}
-         is24Hour={true}
-       />
-     )}
-   </View>
- );
+        {showTimePicker && (
+          <DateTimePicker
+            value={time}
+            mode="time"
+            display="default"
+            onChange={handleTimeSelection}
+            is24Hour={true}
+          />
+        )}
+      </View>
+    );
 };
 
 const styles = StyleSheet.create({

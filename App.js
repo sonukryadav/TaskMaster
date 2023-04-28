@@ -59,6 +59,7 @@ export default function App() {
   });
   const [refreshing, setRefreshing] = React.useState(false);
   const [dateAs, setDateAs] = React.useState(new Date());
+  const [timeAs, setTimeAs] = React.useState(date.format(new Date(), 'hh:mm A [GMT]Z'));
   const { timeC, setTimeC, dateC, setDateC } = useContext(mycontext);
   // console.log(timeC);
   // console.log(dateC);
@@ -97,11 +98,11 @@ export default function App() {
     setDateAs(pre => dateSee);
   }
 
-  const timeSee = (timeSee) => {
-    return timeSee;
+  const timeCall = (timeSee) => {
+    setTimeAs(pre => timeSee);
   }
 
-  console.log("dateAs-----", dateAs);
+  // console.log("(timeAs----------",timeAs);
 
 
   // ----------------------------
@@ -114,17 +115,20 @@ export default function App() {
     }
     // let de = dateC.getTime();
     let de = dateAs.getTime();
-    let te = timeC.getTime();
+    // let te = timeC.getTime();
+    let te = timeAs;
     let updatedArray = [...ss,{ id: ss.length + 1, task: todo.trim(), completed: false, date:de, time:te },];
     setTodo("");
     setSs(updatedArray);
     addTaskSql();
-  }, [todo, dateAs]);
+    setTimeAs(pre => date.format(new Date(), 'hh:mm A [GMT]Z'));
+  }, [todo, dateAs, timeAs]);
 
   const addTaskSql = () => {
     let todoT = todo.trim();
     let de = dateC.getTime();
-    let te = timeC.getTime();
+    // let te = timeC.getTime();
+    let te = timeAs;
     generalExecuteSql(
       db,`INSERT INTO ${tbl} (task, completed, date, time) VALUES (?, ?, ? ,?)`,[todoT, 0, de, te ]
     ).then((tx) => {
@@ -335,7 +339,7 @@ export default function App() {
             Select date and time :
           </Text>
           <Date1 dateFun={dateCall} />
-          <Time />
+          <Time timeFun={ timeCall} />
         </View>
 
         <TouchableOpacity
@@ -378,10 +382,11 @@ export default function App() {
               renderItem={({ item, index }) => {
                 let dd = new Date(item.date);
                 let dd1 = date.format(dd, 'ddd, MMM DD YYYY');
-                let tt1 = date.format(dd, 'hh:mm A [GMT]Z');
+                let tt1 = date.format(dd, 'hh:mm:ss A [GMT]Z');
+                // console.log("in flat list ======>>>>",  item.time);
                 return (
                 <View style={styles.flatListView1}>
-                    <Text style={styles.dateR}>{tt1.substring(0,8) + "\n" + dd1}</Text>
+                    <Text style={styles.dateR}>{`${item.time}`.substring(0, 8) + "\n" + dd1}</Text>
                   <TouchableOpacity
                     style={{ flex: 1 }}
                     onLongPress={() => {
